@@ -150,15 +150,11 @@ public class DecisionStump {
 					.subtract(stepSize)); threshold.compareTo(BigDecimal
 					.valueOf(columnData.max).add(stepSize)) < 0; threshold = threshold
 					.add(stepSize)) {
-
 				for (int j = 0; j < OP_ARRAY.length; j++) {
-
 					DecisionStump stump = new DecisionStump(threshold,
 							OP_ARRAY[j], i, labels.length);
-
 					BigDecimal error = stump.calculateColumnWeightedError(
 							getColumnData(trainFile, i), weights, labels);
-	
 					if (minError.compareTo(error) == 1) {
 						minError = error;
 						minErrorDecisionStump = stump;
