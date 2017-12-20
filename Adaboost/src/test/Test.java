@@ -9,8 +9,9 @@ public class Test {
 
 	public static void main(String[] args) {
 
-		File file = new File("resources/trainSamples.psv");
+		File file = new File("D:/tjcProjs/gitProjs/Adaboost/Adaboost/resources/trainSamples.psv");
 		Adaboost boosting;
+
 		try {
 			boosting = Adaboost.train(file, 10, 10, 0);
 			int label = boosting.classify("1.|2.1".split("\\|"));

@@ -50,6 +50,7 @@ public class Adaboost {
 
 		int samplesCount = getTotalSamplesNumber(trainFile);
 		double[] weights = new double[samplesCount];
+		//集成误差【对某元素，各弱分类器学习后加权累计;>0,则归为1类;<0,则归为-1类】，用于计算误差率
 		double[] aggClassEst = new double[samplesCount];
 		for (int i = 0; i < weights.length; i++) {
 			weights[i] = ((double) 1 / samplesCount);
@@ -59,21 +60,24 @@ public class Adaboost {
 		int[] labels = getlabels(trainFile, samplesCount);
 		List<DecisionStump> model = new ArrayList<DecisionStump>();
 		for (int i = 0; i < maxIteration; i++) {
+			//最优决策
 			DecisionStump stump = DecisionStump.bestStump(trainFile, labels,
 					numberofSteps, weights);
+			//(1-err)/err
 			BigDecimal log = BigDecimal.ONE
 					.subtract((stump.getWeightedError())).divide(
 							stump.getWeightedError(), 6, RoundingMode.HALF_UP);
-
+//alpha=(1/2)ln(log)
 			BigDecimal alpha = BigDecimal.valueOf(0.5)
 					.multiply(BigDecimal.valueOf(Math.log(log.doubleValue())))
 					.setScale(12, BigDecimal.ROUND_HALF_UP);
 
 			stump.setAlpha(alpha);
 			model.add(stump);
-
+//更新权重
 			weights = updateWeights(trainFile, labels, stump, weights,
 					aggClassEst, alpha.doubleValue());
+			//计算Error
 			double error = calculateError(aggClassEst, labels);
 
 			if (error <= targetError)

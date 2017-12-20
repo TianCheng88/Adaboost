@@ -139,7 +139,9 @@ public class DecisionStump {
 		DecisionStump minErrorDecisionStump = null;
 		BigDecimal minError = BigDecimal.valueOf(Double.MAX_VALUE);
 		for (int i = 0; i < columnsCount; i++) {
+			//按Feature组合数据【以列为单位】
 			ColumnData columnData = getColumnData(trainFile, i);
+			//计算步长
 			BigDecimal stepSize = BigDecimal.valueOf(columnData.max)
 					.subtract(BigDecimal.valueOf(columnData.min))
 					.divide(BigDecimal.valueOf(numberofSteps));
@@ -201,7 +203,7 @@ public class DecisionStump {
 	}
 
 	/**
-	 * Get Column Count without calculate last column because 
+	 * Get Column Count without calculate last column 【label】
 	 * @param trainFile
 	 * @return
 	 * @throws IOException
